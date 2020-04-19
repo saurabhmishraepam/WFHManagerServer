@@ -3,10 +3,8 @@ package com.epam.wfhmanager.wfhmanager.controller;
 import com.epam.wfhmanager.wfhmanager.model.ChromeAggrData;
 import com.epam.wfhmanager.wfhmanager.model.ChromeData;
 import com.epam.wfhmanager.wfhmanager.model.ProcessData;
-import com.epam.wfhmanager.wfhmanager.store.ChromeDataStore;
-import com.epam.wfhmanager.wfhmanager.store.ConnectionsStore;
-import com.epam.wfhmanager.wfhmanager.store.ProcessDataStore;
-import com.epam.wfhmanager.wfhmanager.store.WorkingHoursStore;
+import com.epam.wfhmanager.wfhmanager.model.UserInfo;
+import com.epam.wfhmanager.wfhmanager.store.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -106,4 +104,14 @@ public class WorkingHoursUpdateController {
         return pData;
     }
 
+
+    @PostMapping("/userinfo")
+    public void userInfo(@RequestBody UserInfo user) {
+        UserInfoStore.user=user;
+    }
+
+    @GetMapping("/userinfo")
+    public UserInfo getUserInfo() {
+        return UserInfoStore.user;
+    }
 }
