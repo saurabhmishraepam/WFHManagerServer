@@ -8,9 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class WorkingHoursUpdateController {
@@ -21,7 +19,10 @@ public class WorkingHoursUpdateController {
     }
     @GetMapping("/workinghour")
     public Map<String, Long > updateWorkingHours(){
-        return WorkingHoursStore.workingHoursMap;
+
+        Map<String , Long> sortedWorkingHrs=new TreeMap(WorkingHoursStore.workingHoursMap);
+
+        return sortedWorkingHrs;
     }
 
     @PostMapping("/chrome-history")
