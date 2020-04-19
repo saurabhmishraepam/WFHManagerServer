@@ -2,9 +2,12 @@ package com.epam.wfhmanager.wfhmanager.controller;
 
 import com.epam.wfhmanager.wfhmanager.model.ChromeAggrData;
 import com.epam.wfhmanager.wfhmanager.model.ChromeData;
+import com.epam.wfhmanager.wfhmanager.model.ProcessData;
 import com.epam.wfhmanager.wfhmanager.store.ChromeDataStore;
 import com.epam.wfhmanager.wfhmanager.store.ConnectionsStore;
+import com.epam.wfhmanager.wfhmanager.store.ProcessDataStore;
 import com.epam.wfhmanager.wfhmanager.store.WorkingHoursStore;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,6 +86,24 @@ public class WorkingHoursUpdateController {
     @GetMapping("/newconnections")
     public Set<String> newConnectionUpdater() {
         return ConnectionsStore.newConnections;
+    }
+
+    @PostMapping("/processes")
+    public ResponseEntity postController(@RequestBody Map<String, Integer> processData) {
+        ProcessDataStore.map=processData;
+        return ResponseEntity.ok("POSTED SUCCESSFULLY");
+    }
+
+    @GetMapping("/processes")
+    public ProcessData getProcessData(){
+        ProcessData pData = new ProcessData();
+        String[] apps = new String[ProcessDataStore.map.size()];
+        ProcessDataStore.map.keySet().toArray(apps);
+        Integer[] timeSpent = new Integer[ProcessDataStore.map.size()];
+        ProcessDataStore.map.values().toArray(timeSpent);
+        pData.setApps(apps);
+        pData.setTimeSpent(timeSpent);
+        return pData;
     }
 
 }
