@@ -2,24 +2,26 @@ package com.epam.wfhmanager.wfhmanager.controller;
 
 import com.epam.wfhmanager.wfhmanager.ChromeData;
 import com.epam.wfhmanager.wfhmanager.store.ChromeDataStore;
+import com.epam.wfhmanager.wfhmanager.store.ConnectionsStore;
+import com.epam.wfhmanager.wfhmanager.store.WorkingHoursStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 public class WorkingHoursUpdateController {
 
     @PostMapping("/workinghour")
-    public void updateWorkingHours(@RequestBody String body){
-
-        if(body.contains("chromedata")){
-
-        }
-        System.out.println(body);
-
+    public void updateWorkingHours(@RequestBody Map<String, Long > meetingsHoursMap){
+        WorkingHoursStore.workingHoursMap=meetingsHoursMap;
+    }
+    @GetMapping("/workinghour")
+    public Map<String, Long > updateWorkingHours(){
+        return WorkingHoursStore.workingHoursMap;
     }
 
     @PostMapping("/chrome-history")
@@ -37,8 +39,25 @@ public class WorkingHoursUpdateController {
         ChromeDataStore.map.values().toArray(count);
         chromeData.setSiteNames(data);
         chromeData.setCount(count);
-
         return chromeData;
 
     }
+
+    @PostMapping("/connectionlist")
+    public void connectionUpdater(@RequestBody Map<String, Integer> connections){
+        ConnectionsStore.connectionStrength=connections;
+    }
+    @GetMapping("/connectionlist")
+    public Map<String, Integer > connectionUpdater(){
+        return ConnectionsStore.connectionStrength;
+    }
+    @PostMapping("/newconnections")
+    public void connectionUpdater(@RequestBody Set<String> newConnections){
+        ConnectionsStore.newConnections=newConnections;
+    }
+    @GetMapping("/newconnections")
+    public Set<String> newConnectionUpdater(){
+        return ConnectionsStore.newConnections;
+    }
+
 }
