@@ -1,5 +1,6 @@
 package com.epam.wfhmanager.wfhmanager.controller;
 
+import com.epam.wfhmanager.wfhmanager.model.ChromeAggrData;
 import com.epam.wfhmanager.wfhmanager.model.ChromeData;
 import com.epam.wfhmanager.wfhmanager.store.ChromeDataStore;
 import com.epam.wfhmanager.wfhmanager.store.ConnectionsStore;
@@ -45,6 +46,23 @@ public class WorkingHoursUpdateController {
 
         return chromeData;
 
+    }
+
+    @PostMapping("/chrome-aggr")
+    public void updateChromeAggrData(@RequestBody Map<String, Integer> map){
+        ChromeDataStore.chromeAggr = map;
+    }
+
+    @GetMapping("/chrome-aggr")
+    public ChromeAggrData getChromeAggrData(){
+        ChromeAggrData chromeData = new ChromeAggrData();
+        String[] data=new String [ChromeDataStore.chromeAggr.size()];
+        ChromeDataStore.chromeAggr.keySet().toArray(data);
+        Integer[] count = new Integer[ChromeDataStore.chromeAggr.size()];
+        ChromeDataStore.chromeAggr.values().toArray(count);
+        chromeData.setType(data);
+        chromeData.setTime(count);
+        return chromeData;
     }
 
     @PostMapping("/connectionlist")
