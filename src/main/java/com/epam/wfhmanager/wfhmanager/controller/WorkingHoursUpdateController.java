@@ -1,21 +1,24 @@
 package com.epam.wfhmanager.wfhmanager.controller;
 
-import com.epam.wfhmanager.wfhmanager.ChromeData;
+import com.epam.wfhmanager.wfhmanager.model.ChromeData;
 import com.epam.wfhmanager.wfhmanager.store.ChromeDataStore;
 import com.epam.wfhmanager.wfhmanager.store.ConnectionsStore;
 import com.epam.wfhmanager.wfhmanager.store.WorkingHoursStore;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 public class WorkingHoursUpdateController {
 
     @PostMapping("/workinghour")
-    public void updateWorkingHours(@RequestBody Map<String, Long > meetingsHoursMap){
-        WorkingHoursStore.workingHoursMap=meetingsHoursMap;
+    public void updateWorkingHours(@RequestBody Map<String, Long> meetingsHoursMap) {
+        WorkingHoursStore.workingHoursMap = meetingsHoursMap;
     }
     @GetMapping("/workinghour")
     public Map<String, Long > updateWorkingHours(){
@@ -26,38 +29,41 @@ public class WorkingHoursUpdateController {
     }
 
     @PostMapping("/chrome-history")
-    public void updateChromeData(@RequestBody Map<String, Integer> map){
-        System.out.println(map);
-        //data
-        ChromeDataStore.map=map;
+    public void updateChromeData(@RequestBody Map<String, Integer> map) {
+        ChromeDataStore.map = map;
     }
+
     @GetMapping("/chrome-history")
-    public ChromeData getChromeHistory(){
+    public ChromeData getChromeHistory() {
         ChromeData chromeData = new ChromeData();
-        String[] data=new String [ChromeDataStore.map.size()];
+        String[] data = new String[ChromeDataStore.map.size()];
         ChromeDataStore.map.keySet().toArray(data);
         Integer[] count = new Integer[ChromeDataStore.map.size()];
         ChromeDataStore.map.values().toArray(count);
         chromeData.setSiteNames(data);
         chromeData.setCount(count);
+
         return chromeData;
 
     }
 
     @PostMapping("/connectionlist")
-    public void connectionUpdater(@RequestBody Map<String, Integer> connections){
-        ConnectionsStore.connectionStrength=connections;
+    public void connectionUpdater(@RequestBody Map<String, Integer> connections) {
+        ConnectionsStore.connectionStrength = connections;
     }
+
     @GetMapping("/connectionlist")
-    public Map<String, Integer > connectionUpdater(){
+    public Map<String, Integer> connectionUpdater() {
         return ConnectionsStore.connectionStrength;
     }
+
     @PostMapping("/newconnections")
-    public void connectionUpdater(@RequestBody Set<String> newConnections){
-        ConnectionsStore.newConnections=newConnections;
+    public void connectionUpdater(@RequestBody Set<String> newConnections) {
+        ConnectionsStore.newConnections = newConnections;
     }
+
     @GetMapping("/newconnections")
-    public Set<String> newConnectionUpdater(){
+    public Set<String> newConnectionUpdater() {
         return ConnectionsStore.newConnections;
     }
 

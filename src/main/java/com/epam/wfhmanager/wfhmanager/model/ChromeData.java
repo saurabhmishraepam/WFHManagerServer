@@ -1,4 +1,4 @@
-package com.epam.wfhmanager.wfhmanager;
+package com.epam.wfhmanager.wfhmanager.model;
 
 public class ChromeData {
     String[] siteNames;

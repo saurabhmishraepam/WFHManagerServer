@@ -6,8 +6,5 @@ import java.util.Map;
 public class ChromeDataStore {
 
     public static Map<String, Integer> map = new HashMap<>();
-
-
-
-
+    public static Map<String, Integer> chromeAggr = new HashMap<>();
 }
