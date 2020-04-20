@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
-import java.util.Map;
-import java.util.Set;
 
 @RestController
 public class WorkingHoursUpdateController {
@@ -22,17 +20,30 @@ public class WorkingHoursUpdateController {
     public void updateWorkingHours(@RequestBody Map<String, Long> meetingsHoursMap) {
         WorkingHoursStore.workingHoursMap = meetingsHoursMap;
     }
-    @GetMapping("/workinghour")
-    public Map<String, Long > updateWorkingHours(){
 
-        Map<String , Long> sortedWorkingHrs=new TreeMap(WorkingHoursStore.workingHoursMap);
+    @GetMapping("/workinghour")
+    public Map<String, Long> updateWorkingHours() {
+
+        Map<String, Long> sortedWorkingHrs = new TreeMap(WorkingHoursStore.workingHoursMap);
 
         return sortedWorkingHrs;
     }
 
     @PostMapping("/chrome-history")
     public void updateChromeData(@RequestBody Map<String, Integer> map) {
-        ChromeDataStore.map = map;
+        if (map.size() < 12) {
+            ChromeDataStore.map = map;
+        } else {
+            List<Integer> list = new ArrayList<>(map.values());
+            Collections.sort(list);
+            Map<String, Integer> temp = new HashMap<>();
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                if (entry.getValue() >= list.get(list.size()-10)) {
+                    temp.put(entry.getKey(), entry.getValue());
+                }
+            }
+            ChromeDataStore.map = temp;
+        }
     }
 
     @GetMapping("/chrome-history")
@@ -50,14 +61,14 @@ public class WorkingHoursUpdateController {
     }
 
     @PostMapping("/chrome-aggr")
-    public void updateChromeAggrData(@RequestBody Map<String, Integer> map){
+    public void updateChromeAggrData(@RequestBody Map<String, Integer> map) {
         ChromeDataStore.chromeAggr = map;
     }
 
     @GetMapping("/chrome-aggr")
-    public ChromeAggrData getChromeAggrData(){
+    public ChromeAggrData getChromeAggrData() {
         ChromeAggrData chromeData = new ChromeAggrData();
-        String[] data=new String [ChromeDataStore.chromeAggr.size()];
+        String[] data = new String[ChromeDataStore.chromeAggr.size()];
         ChromeDataStore.chromeAggr.keySet().toArray(data);
         Integer[] count = new Integer[ChromeDataStore.chromeAggr.size()];
         ChromeDataStore.chromeAggr.values().toArray(count);
@@ -88,12 +99,12 @@ public class WorkingHoursUpdateController {
 
     @PostMapping("/processes")
     public ResponseEntity postController(@RequestBody Map<String, Integer> processData) {
-        ProcessDataStore.map=processData;
+        ProcessDataStore.map = processData;
         return ResponseEntity.ok("POSTED SUCCESSFULLY");
     }
 
     @GetMapping("/processes")
-    public ProcessData getProcessData(){
+    public ProcessData getProcessData() {
         ProcessData pData = new ProcessData();
         String[] apps = new String[ProcessDataStore.map.size()];
         ProcessDataStore.map.keySet().toArray(apps);
@@ -107,7 +118,7 @@ public class WorkingHoursUpdateController {
 
     @PostMapping("/userinfo")
     public void userInfo(@RequestBody UserInfo user) {
-        UserInfoStore.user=user;
+        UserInfoStore.user = user;
     }
 
     @GetMapping("/userinfo")
